@@ -26,6 +26,11 @@
         /// </summary>
         public string ParameterName;
 
+        /// <summary>
+        /// Full *.bin file path.
+        /// </summary>
+        public string FilePath;
+
         public TBLRecord()
         {
             FileNumber = 0;

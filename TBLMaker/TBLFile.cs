@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TBLMaker
 {
@@ -21,6 +22,11 @@ namespace TBLMaker
             Path = path;
             FileBytes = fileBytes;
             ParsedTBLRecords = parsedRecords;
+        }
+
+        internal string GetDirectory()
+        {
+            return Path.Substring(0, Path.LastIndexOf("\\", StringComparison.Ordinal));
         }
     }
 }

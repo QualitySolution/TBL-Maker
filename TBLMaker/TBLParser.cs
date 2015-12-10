@@ -54,6 +54,15 @@ namespace TBLMaker
                 {
                     record.FileSize += Convert.ToString(fileBytes[j], 16).PadLeft(2, '0');
                 }
+
+                //Filling in *.bin file path.
+                record.FilePath = filePath.Substring(0, filePath.LastIndexOf("\\", StringComparison.Ordinal) + 1);
+                record.FilePath += record.FileName;
+                var info = new FileInfo(record.FilePath);
+                if (!info.Exists)
+                {
+                    record.FilePath = string.Empty;
+                }
                 recordsList.Add(record);
                 i++;
             }

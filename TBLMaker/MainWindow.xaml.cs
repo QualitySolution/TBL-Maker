@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -18,6 +20,7 @@ namespace TBLMaker
         private const int FileColumn = 2;
         private const int SizeColumn = 3;
         private const int ButtonColumn = 4;
+        private const int HiddenFilePathColumn = 5;
 
         private TBLFile _file;
 
@@ -27,21 +30,23 @@ namespace TBLMaker
             MenuOpen.Click += MenuOpenOnClick;
             MenuSave.Click += MenuSaveOnClick;
             MenuSave.IsEnabled = false;
-            MenuSaveAs.Click += MenuSaveAsOnClick;
-            MenuSaveAs.IsEnabled = false;
+            MenuSaveAsZip.Click += MenuSaveAsZipOnClick;
+            MenuSaveAsZip.IsEnabled = false;
             MenuClose.Click += (sender, args) => Application.Current.Shutdown(0);
         }
 
-        private void MenuSaveAsOnClick(object sender, RoutedEventArgs routedEventArgs)
+        private void MenuSaveAsZipOnClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            var saveDlg = new SaveFileDialog {Filter = "Файлы TBL (*.tbl)|*.tbl"};
+            var saveDlg = new SaveFileDialog {Filter = "Файлы ZIP (*.zip)|*.zip"};
             if (saveDlg.ShowDialog() == true)
             {
-                _file.Path = saveDlg.FileName;
                 FillFileStructure();
-                TBLWriter.Write(_file);
-                Title = string.Format("TBL Maker - {0}",
-                    saveDlg.FileName.Substring(saveDlg.FileName.LastIndexOf("\\", StringComparison.Ordinal) + 1));
+                if (ZipWriter.WriteZip(_file, saveDlg.FileName))
+                {
+                    string args = string.Format("/Select, \"{0}\"", saveDlg.FileName);
+                    ProcessStartInfo pfi = new ProcessStartInfo("Explorer.exe", args);
+                    Process.Start(pfi);
+                }
             }
         }
 
@@ -104,15 +109,22 @@ namespace TBLMaker
                 btn.Content = stackPnl;
                 btn.Margin = new Thickness(5);
 
+                var lb3 = new Label();
+                Grid.SetColumn(lb3, HiddenFilePathColumn);
+                Grid.SetRow(lb3, Grid1.RowDefinitions.Count - 1);
+                lb3.Content = record.FilePath;
+                lb3.Visibility = Visibility.Hidden;
+
                 Grid1.Children.Add(lb1);
                 Grid1.Children.Add(tb1);
                 Grid1.Children.Add(tb2);
                 Grid1.Children.Add(lb2);
                 Grid1.Children.Add(btn);
+                Grid1.Children.Add(lb3);
             }
             Height = Grid1.RowDefinitions.Count*30 + 80;
             MenuSave.IsEnabled = true;
-            MenuSaveAs.IsEnabled = true;
+            MenuSaveAsZip.IsEnabled = true;
         }
 
         /// <summary>
@@ -141,6 +153,10 @@ namespace TBLMaker
                     var lbSize = Grid1.Children.Cast<UIElement>()
                         .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == SizeColumn) as Label;
                     if (lbSize != null) lbSize.Content = fileSize;
+
+                    var lbPath = Grid1.Children.Cast<UIElement>()
+                        .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == HiddenFilePathColumn) as Label;
+                    if (lbPath != null) lbPath.Content = openDlg.FileName;
                 }
             }
         }
@@ -201,6 +217,10 @@ namespace TBLMaker
                 var lbSize = Grid1.Children.Cast<UIElement>()
                     .First(e => Grid.GetRow(e) == i && Grid.GetColumn(e) == SizeColumn) as Label;
                 if (lbSize != null) _file.ParsedTBLRecords[i - 1].FileSize = lbSize.Content as string;
+
+                var lbPath = Grid1.Children.Cast<UIElement>()
+                    .First(e => Grid.GetRow(e) == i && Grid.GetColumn(e) == HiddenFilePathColumn) as Label;
+                if (lbPath != null) _file.ParsedTBLRecords[i - 1].FilePath = lbPath.Content as string;
             }
         }
     }
