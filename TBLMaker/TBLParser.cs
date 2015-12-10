@@ -4,6 +4,9 @@ using System.IO;
 
 namespace TBLMaker
 {
+    /// <summary>
+    /// Class for reading and parsing *.tbl file
+    /// </summary>
     internal static class TBLParser
     {
         internal const int Start = 310;
@@ -13,7 +16,11 @@ namespace TBLMaker
         internal const int FirstFileSize = 402;
         internal const int SectionSize = 96;
 
-
+        /// <summary>
+        /// Read *.tbl file, specified by filePath parameter.
+        /// </summary>
+        /// <param name="filePath">File path.</param>
+        /// <returns>Filled TBLFile structure.</returns>
         public static TBLFile Parse(string filePath)
         {
             List<TBLRecord> recordsList = new List<TBLRecord>();

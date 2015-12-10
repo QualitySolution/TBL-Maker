@@ -113,6 +113,9 @@ namespace TBLMaker
             MenuSaveAs.IsEnabled = true;
         }
 
+        /// <summary>
+        /// Filling in new info for selected *.bin file.
+        /// </summary>
         private void OpenBinFileButtonOnClick(object sender, RoutedEventArgs routedEventArgs)
         {
             var btn = sender as UIElement;
@@ -140,6 +143,9 @@ namespace TBLMaker
             }
         }
 
+        /// <summary>
+        /// Creates header for table of records.
+        /// </summary>
         private void CreateHeader()
         {
             var row = new RowDefinition { MinHeight = 30 };
@@ -176,6 +182,9 @@ namespace TBLMaker
 
         }
 
+        /// <summary>
+        /// Fills in TBLFile with new info from Window.
+        /// </summary>
         private void FillFileStructure()
         {
             for (int i = 1; i < Grid1.RowDefinitions.Count; i++)
