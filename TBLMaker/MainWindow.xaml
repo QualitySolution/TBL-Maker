@@ -10,13 +10,14 @@
     <DockPanel Background="WhiteSmoke">
         <Menu DockPanel.Dock="Top" Background="WhiteSmoke">
             <MenuItem Header="_Файл">
-                <MenuItem Header="Открыть" Name="MenuOpen"/>
-                <MenuItem Header="_Сохранить" Name="MenuSave"/>
-                <MenuItem Header="_Сохранить как..." Name="MenuSaveAs"/>
-                <MenuItem Header="_Закрыть" Name="MenuClose"/>
+                <MenuItem Header="Открыть" Name="MenuOpen" />
+                <MenuItem Header="_Сохранить" Name="MenuSave" />
+                <MenuItem Header="_Сохранить как..." Name="MenuSaveAs" />
+                <MenuItem Header="_Закрыть" Name="MenuClose" />
             </MenuItem>
         </Menu>
-        <Grid Name="Grid1" Background="WhiteSmoke" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top" Width="520" Margin="0,10,0,0">
+        <Grid Name="Grid1" Background="WhiteSmoke" HorizontalAlignment="Left" Height="Auto" VerticalAlignment="Top"
+              Width="520" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="200" />
@@ -24,10 +25,10 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label x:Name="labelHello" Content="Для начала работы откройте *.tbl файл." Height="153.5" VerticalAlignment="Top" Width="Auto"/>
+            <Label x:Name="labelHello" Content="Для начала работы откройте *.tbl файл." Height="153.5"
+                   VerticalAlignment="Top" Width="Auto" />
         </Grid>
-        
+
 
     </DockPanel>
 </Window>
-

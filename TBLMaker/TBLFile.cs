@@ -3,13 +3,13 @@
 namespace TBLMaker
 {
     /// <summary>
-    /// Represents *.tbl file.
+    ///     Represents *.tbl file.
     /// </summary>
-    class TBLFile
+    internal class TBLFile
     {
-        public string Path;
         public byte[] FileBytes;
         public List<TBLRecord> ParsedTBLRecords;
+        public string Path;
 
         /// <summary>
         /// </summary>

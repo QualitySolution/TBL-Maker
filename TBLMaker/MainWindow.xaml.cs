@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -10,7 +9,7 @@ using Microsoft.Win32;
 namespace TBLMaker
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -20,7 +19,8 @@ namespace TBLMaker
         private const int SizeColumn = 3;
         private const int ButtonColumn = 4;
 
-        private TBLFile _file = null;
+        private TBLFile _file;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -34,13 +34,14 @@ namespace TBLMaker
 
         private void MenuSaveAsOnClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            var saveDlg = new SaveFileDialog { Filter = "Файлы TBL (*.tbl)|*.tbl" };
+            var saveDlg = new SaveFileDialog {Filter = "Файлы TBL (*.tbl)|*.tbl"};
             if (saveDlg.ShowDialog() == true)
             {
                 _file.Path = saveDlg.FileName;
                 FillFileStructure();
                 TBLWriter.Write(_file);
-                this.Title = string.Format("TBL Maker - {0}", saveDlg.FileName.Substring(saveDlg.FileName.LastIndexOf("\\", StringComparison.Ordinal) + 1));
+                Title = string.Format("TBL Maker - {0}",
+                    saveDlg.FileName.Substring(saveDlg.FileName.LastIndexOf("\\", StringComparison.Ordinal) + 1));
             }
         }
 
@@ -52,7 +53,7 @@ namespace TBLMaker
 
         private void MenuOpenOnClick(object sender, RoutedEventArgs routedEventArgs)
         {
-            var openDlg = new OpenFileDialog { Multiselect = false, Filter = "Файлы TBL (*.tbl)|*.tbl" };
+            var openDlg = new OpenFileDialog {Multiselect = false, Filter = "Файлы TBL (*.tbl)|*.tbl"};
             if (openDlg.ShowDialog() == true)
                 _file = TBLParser.Parse(openDlg.FileName);
             else
@@ -60,11 +61,12 @@ namespace TBLMaker
             Grid1.Children.Clear();
             Grid1.RowDefinitions.Clear();
             CreateHeader();
-            this.Title = string.Format("TBL Maker - {0}", openDlg.FileName.Substring(openDlg.FileName.LastIndexOf("\\", StringComparison.Ordinal) + 1));
+            Title = string.Format("TBL Maker - {0}",
+                openDlg.FileName.Substring(openDlg.FileName.LastIndexOf("\\", StringComparison.Ordinal) + 1));
 
             foreach (var record in _file.ParsedTBLRecords)
             {
-                var row = new RowDefinition { MinHeight = 30, MaxHeight = 30};
+                var row = new RowDefinition {MinHeight = 30, MaxHeight = 30};
                 Grid1.RowDefinitions.Add(row);
 
                 var lb1 = new Label();
@@ -108,13 +110,13 @@ namespace TBLMaker
                 Grid1.Children.Add(lb2);
                 Grid1.Children.Add(btn);
             }
-            this.Height = Grid1.RowDefinitions.Count*30 + 80;
+            Height = Grid1.RowDefinitions.Count*30 + 80;
             MenuSave.IsEnabled = true;
             MenuSaveAs.IsEnabled = true;
         }
 
         /// <summary>
-        /// Filling in new info for selected *.bin file.
+        ///     Filling in new info for selected *.bin file.
         /// </summary>
         private void OpenBinFileButtonOnClick(object sender, RoutedEventArgs routedEventArgs)
         {
@@ -122,16 +124,16 @@ namespace TBLMaker
             if (btn != null)
             {
                 var row = Grid.GetRow(btn);
-                var openDlg = new OpenFileDialog { Multiselect = false, Filter = "Файлы BIN (*.bin)|*.bin" };
+                var openDlg = new OpenFileDialog {Multiselect = false, Filter = "Файлы BIN (*.bin)|*.bin"};
                 if (openDlg.ShowDialog() == true)
                 {
-                    FileInfo info = new FileInfo(openDlg.FileName);
+                    var info = new FileInfo(openDlg.FileName);
 
                     var tbName = Grid1.Children.Cast<UIElement>()
-                    .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == FileColumn) as TextBox;
+                        .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == FileColumn) as TextBox;
                     if (tbName != null) tbName.Text = info.Name;
 
-                    string fileSize = Convert.ToString(info.Length, 16).PadLeft(6, '0');
+                    var fileSize = Convert.ToString(info.Length, 16).PadLeft(6, '0');
                     var first = fileSize.Substring(0, 2);
                     var second = fileSize.Substring(2, 2);
                     var third = fileSize.Substring(4, 2);
@@ -144,11 +146,11 @@ namespace TBLMaker
         }
 
         /// <summary>
-        /// Creates header for table of records.
+        ///     Creates header for table of records.
         /// </summary>
         private void CreateHeader()
         {
-            var row = new RowDefinition { MinHeight = 30 };
+            var row = new RowDefinition {MinHeight = 30};
             Grid1.RowDefinitions.Add(row);
 
             var lb1 = new Label();
@@ -179,15 +181,14 @@ namespace TBLMaker
             Grid1.Children.Add(lb2);
             Grid1.Children.Add(lb3);
             Grid1.Children.Add(lb4);
-
         }
 
         /// <summary>
-        /// Fills in TBLFile with new info from Window.
+        ///     Fills in TBLFile with new info from Window.
         /// </summary>
         private void FillFileStructure()
         {
-            for (int i = 1; i < Grid1.RowDefinitions.Count; i++)
+            for (var i = 1; i < Grid1.RowDefinitions.Count; i++)
             {
                 var tbParameter = Grid1.Children.Cast<UIElement>()
                     .First(e => Grid.GetRow(e) == i && Grid.GetColumn(e) == ParameterColumn) as TextBox;

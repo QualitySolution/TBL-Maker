@@ -1,40 +1,41 @@
-﻿using System;
-
-namespace TBLMaker
+﻿namespace TBLMaker
 {
     /// <summary>
-    /// Represents one record in *.tbl file.
+    ///     Represents one record in *.tbl file.
     /// </summary>
     public class TBLRecord
     {
         /// <summary>
-        /// Number of record in *.tbl file.
-        /// </summary>
-        public int FileNumber;
-        /// <summary>
-        /// Name of parameter controlled by *.bin.
-        /// </summary>
-        public string ParameterName;
-        /// <summary>
-        /// *.bin file name
+        ///     *.bin file name
         /// </summary>
         public string FileName;
+
         /// <summary>
-        /// *.bin file size. Should be 6 byte hex value writed in 2-byte reversed order. 
-        /// E.g. file size 000F3C should be writed as 3C0F00. 
+        ///     Number of record in *.tbl file.
+        /// </summary>
+        public int FileNumber;
+
+        /// <summary>
+        ///     *.bin file size. Should be 6 byte hex value writed in 2-byte reversed order.
+        ///     E.g. file size 000F3C should be writed as 3C0F00.
         /// </summary>
         public string FileSize;
+
+        /// <summary>
+        ///     Name of parameter controlled by *.bin.
+        /// </summary>
+        public string ParameterName;
 
         public TBLRecord()
         {
             FileNumber = 0;
-            ParameterName = String.Empty;
-            FileName = String.Empty;
-            FileSize = String.Empty;
+            ParameterName = string.Empty;
+            FileName = string.Empty;
+            FileSize = string.Empty;
         }
-        
+
         /// <summary>
-        /// *.bin file record representation
+        ///     *.bin file record representation
         /// </summary>
         /// <param name="fileNumber">Number of record in *.tbl file</param>
         /// <param name="parameterName">File parameter name</param>
